@@ -18,13 +18,15 @@ namespace ProvinceMap.GameCore.gfx
         public Texture2D Texture { get; set; }
         public static Texture2D TextureGlobal { get; set; }
         public int Thickness { get; set; } = 1;
-        public Line(Vector2 p1, Vector2 p2, Color color, int newThickness)
+        public Map mapped; 
+        public Line(Vector2 p1, Vector2 p2, Color color, int newThickness, Map map = null)
         {
             P1 = p1;
             P2 = p2;
             Color = color;
             Thickness = newThickness;
             linePositions.Add(this);
+            this.mapped = map;
         }
         public void LoadContent(GraphicsDevice graphics)
         {
@@ -66,45 +68,40 @@ namespace ProvinceMap.GameCore.gfx
         public void Draw(SpriteBatch spriteBatch)
         {
             OnPointsPositionsChange();
-            //if (P2.Y < P1.Y)
-            //{
-            //    spriteBatch.Draw(Texture, new Rectangle((int)P2.X, (int)P2.Y, (int)(length), Thickness), null, Color,
-            //        (float)Math.Acos((P2.X - P1.X) / Math.Sqrt((P2.X - P1.X) * (P2.X - P1.X) + (P2.Y - P1.Y) * (P2.Y - P1.Y))),
-            //        Vector2.Zero, SpriteEffects.None, 0f);
-            //}
-            //else
-            //{
-            //    spriteBatch.Draw(Texture, new Rectangle((int)P1.X, (int)P1.Y, (int)(length), Thickness), null, Color,
-            //        (float)Math.Acos((P2.X - P1.X) / Math.Sqrt((P2.X - P1.X) * (P2.X - P1.X) + (P2.Y - P1.Y) * (P2.Y - P1.Y))),
-            //        Vector2.Zero, SpriteEffects.None, 0f);
-            //}
-            spriteBatch.Draw(TextureGlobal, new Rectangle((int)P1.X, (int)P1.Y, (int)(length), Thickness), null, Color,
+            if (mapped!=null)
+            {
+                spriteBatch.Draw(TextureGlobal, new Rectangle((int)P1.X * mapped.mult + mapped.Dx,
+                    (int)P1.Y * mapped.mult + mapped.dy,
+                    (int)(length * mapped.mult),
+                    Thickness * mapped.mult), null, Color,
+                (float)Math.Atan2((P2.Y - P1.Y) * mapped.mult, (P2.X - P1.X) * mapped.mult),
+                Vector2.Zero, SpriteEffects.None, 0f);
+                if (mapped.Dx + mapped.mapTexture.Width * mapped.mult < 1200)
+                {
+                    spriteBatch.Draw(TextureGlobal, new Rectangle((int)P1.X * mapped.mult + mapped.Dx + mapped.mapTexture.Width * mapped.mult,
+                        (int)P1.Y * mapped.mult + mapped.dy,
+                        (int)(length * mapped.mult),
+                        Thickness * mapped.mult), null, Color,
+                    (float)Math.Atan2((P2.Y - P1.Y) * mapped.mult, (P2.X - P1.X) * mapped.mult),
+                    Vector2.Zero, SpriteEffects.None, 0f);
+                }
+            }
+            else
+                spriteBatch.Draw(TextureGlobal, new Rectangle((int)P1.X, (int)P1.Y, (int)(length), Thickness), null, Color,
                 (float)Math.Atan2(P2.Y - P1.Y, P2.X - P1.X),
                 Vector2.Zero, SpriteEffects.None, 0f);
         }
         public void DrawGlobal(SpriteBatch spriteBatch)
         {
             OnPointsPositionsChange();
-            //OnPointsPositionsChange();
-            //if (P2.Y < P1.Y)
-            //{
-            //    //spriteBatch.Draw(TextureGlobal, new Rectangle((int)P2.X, (int)P2.Y, (int)(length), Thickness), null, Color,
-            //    //    MathHelper.ToRadians(360)-(float)Math.Acos((P2.X - P1.X) / Math.Sqrt((P2.X - P1.X) * (P2.X - P1.X) + (P2.Y - P1.Y) * (P2.Y - P1.Y))),
-            //    //    Vector2.Zero, SpriteEffects.None, 0f);
-            //}
-            //else
-            //{
-            //    //Vector2 edge = P2 - P1;
-            //    //double angle = Math.Atan2(edge.X, edge.Y);
-            //    //double angle2 = MathHelper.ToDegrees((float)Math.Acos((P2.X - P1.X) / Math.Sqrt((P2.X - P1.X) * (P2.X - P1.X) + (P2.Y - P1.Y) * (P2.Y - P1.Y))));
-            //    //float dif = edge.Length();
-            //    //spriteBatch.Draw(TextureGlobal, new Rectangle((int)P1.X, (int)P1.Y, (int)(dif), Thickness), null, Color,
-            //    //    (float)angle,
-            //    //    Vector2.Zero, SpriteEffects.None, 0f);
-            //}
-            //double angle2 = MathHelper.ToDegrees((float)Math.Acos((P2.X - P1.X) / Math.Sqrt((P2.X - P1.X) * (P2.X - P1.X) + (P2.Y - P1.Y) * (P2.Y - P1.Y))));
-
-            spriteBatch.Draw(TextureGlobal, new Rectangle((int)P1.X, (int)P1.Y, (int)(length), Thickness), null, Color,
+            if (mapped != null)
+            {
+                spriteBatch.Draw(TextureGlobal, new Rectangle((int)P1.X + mapped.Dx, (int)P1.Y + mapped.dy, (int)(length), Thickness), null, Color,
+                (float)Math.Atan2(P2.Y - P1.Y, P2.X - P1.X),
+                Vector2.Zero, SpriteEffects.None, 0f);
+            }
+            else
+                spriteBatch.Draw(TextureGlobal, new Rectangle((int)P1.X, (int)P1.Y, (int)(length), Thickness), null, Color,
                 (float)Math.Atan2(P2.Y - P1.Y, P2.X - P1.X),
                 Vector2.Zero, SpriteEffects.None, 0f);
         }
