@@ -70,21 +70,28 @@ namespace ProvinceMap.GameCore.gfx
             OnPointsPositionsChange();
             if (mapped!=null)
             {
-                spriteBatch.Draw(TextureGlobal, new Rectangle((int)P1.X * mapped.mult + mapped.Dx,
-                    (int)P1.Y * mapped.mult + mapped.dy,
-                    (int)(length * mapped.mult),
-                    Thickness * mapped.mult), null, Color,
-                (float)Math.Atan2((P2.Y - P1.Y) * mapped.mult, (P2.X - P1.X) * mapped.mult),
+                //spriteBatch.Draw(TextureGlobal, new Rectangle((int)(P1.X * mapped.mult + mapped.Dx),
+                //    (int)(P1.Y * mapped.mult + mapped.dy),
+                //    (int)(length * mapped.mult),
+                //    (int)(Thickness * mapped.mult)), null, Color,
+                //(float)Math.Atan2((P2.Y - P1.Y) * mapped.mult, (P2.X - P1.X) * mapped.mult),
+                //Vector2.Zero, SpriteEffects.None, 0f);
+                spriteBatch.Draw(TextureGlobal, new Rectangle((int)(P1.X * Map.ObjectBufferSize.X  ),
+                    (int)(P1.Y * Map.ObjectBufferSize.X),
+                    (int)(length * Map.ObjectBufferSize.X),
+                    (int)(Thickness )), null, Color,
+                (float)Math.Atan2((P2.Y - P1.Y) * Map.ObjectBufferSize.X, (P2.X - P1.X) * Map.ObjectBufferSize.X),
                 Vector2.Zero, SpriteEffects.None, 0f);
-                if (mapped.Dx + mapped.mapTexture.Width * mapped.mult < 1200)
-                {
-                    spriteBatch.Draw(TextureGlobal, new Rectangle((int)P1.X * mapped.mult + mapped.Dx + mapped.mapTexture.Width * mapped.mult,
-                        (int)P1.Y * mapped.mult + mapped.dy,
-                        (int)(length * mapped.mult),
-                        Thickness * mapped.mult), null, Color,
-                    (float)Math.Atan2((P2.Y - P1.Y) * mapped.mult, (P2.X - P1.X) * mapped.mult),
-                    Vector2.Zero, SpriteEffects.None, 0f);
-                }
+                //if (mapped.Dx + mapped.mapTexture.Width * mapped.mult < 1200)
+                //{
+                //    spriteBatch.Draw(TextureGlobal, new Rectangle((int)(P1.X * mapped.mult + mapped.Dx + mapped.mapTexture.Width * mapped.mult),
+                //        (int)(P1.Y * mapped.mult + mapped.dy),
+                //        (int)(length * mapped.mult),
+                //        (int)(Thickness * mapped.mult)), null, Color,
+                //    (float)Math.Atan2((P2.Y - P1.Y) * mapped.mult, (P2.X - P1.X) * mapped.mult),
+                //    Vector2.Zero, SpriteEffects.None, 0f);
+                //}
+                //*Map.ObjectBufferSize.X
             }
             else
                 spriteBatch.Draw(TextureGlobal, new Rectangle((int)P1.X, (int)P1.Y, (int)(length), Thickness), null, Color,
@@ -96,7 +103,7 @@ namespace ProvinceMap.GameCore.gfx
             OnPointsPositionsChange();
             if (mapped != null)
             {
-                spriteBatch.Draw(TextureGlobal, new Rectangle((int)P1.X + mapped.Dx, (int)P1.Y + mapped.dy, (int)(length), Thickness), null, Color,
+                spriteBatch.Draw(TextureGlobal, new Rectangle((int)(P1.X + mapped.Dx), (int)(P1.Y + mapped.dy), (int)(length), Thickness), null, Color,
                 (float)Math.Atan2(P2.Y - P1.Y, P2.X - P1.X),
                 Vector2.Zero, SpriteEffects.None, 0f);
             }
