@@ -22,6 +22,7 @@ namespace ProvinceMap.GameCore
 {
     class Map
     {
+        public static Map MapInstance {  get; set; }
         private Tile[] tiles;
         private MapIDDecoder mapIDDecoder;
         private Random random = new Random();
@@ -75,6 +76,8 @@ namespace ProvinceMap.GameCore
         #region Initialisation
         public void Loadgame(GraphicsDevice graphicsDevice, GraphicsDeviceManager graphicsDeviceManager)
         {
+            MapInstance = this;
+
             LoadPaths();
 
             mapIDDecoder = new MapIDDecoder();

@@ -28,8 +28,10 @@ namespace ProvinceMap.GameCore
         //For paths
         int weight = -1;
         int lastID = -1;
+        public TileData tileData;
         public Tile()
         {
+            tileData = new TileData(this);
         }
     }
 }

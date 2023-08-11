@@ -72,26 +72,13 @@ namespace ProvinceMap.GameCore
             { 
                 try
                 {
-                    var tile = map.GetTileByClick(mouseState.Position);
-                    foreach (var t in tile.connections)
-                    {
-                        foreach (var tt in t.connections)
-                        {
-                            map.RandomiseColor(tt);
-                        }
-                    }
-                    foreach (var t in tile.connections)
-                    {
-                        map.RandomiseColor(t, Color.Orange);
-                    }
-                    map.RandomiseColor(tile, Color.Red);
-                    System.Diagnostics.Debug.WriteLine(map.GetTileByClick(mouseState.Position).id);
+                    OnMapClick();
                 }
                 catch
                 {
                 }
             }
-            if (random.NextDouble() < 1)
+            if (random.NextDouble() < 0.1)
             {
                 Iterate(gameTime);
                 //map.RandomiseColor(curT, new Color(DateTime.Now.Millisecond / 10, DateTime.Now.Millisecond / 10, DateTime.Now.Millisecond / 10, (byte)255));
@@ -103,6 +90,23 @@ namespace ProvinceMap.GameCore
             Controls();
             mouseState_prev = mouseState;
             base.Update(gameTime);
+        }
+        public void OnMapClick()
+        {
+            var tile = map.GetTileByClick(mouseState.Position);
+            foreach (var t in tile.connections)
+            {
+                foreach (var tt in t.connections)
+                {
+                    map.RandomiseColor(tt);
+                }
+            }
+            foreach (var t in tile.connections)
+            {
+                map.RandomiseColor(t, Color.Orange);
+            }
+            map.RandomiseColor(tile, Color.Red);
+            System.Diagnostics.Debug.WriteLine(map.GetTileByClick(mouseState.Position).id);
         }
 
         public void Controls()
@@ -142,6 +146,7 @@ namespace ProvinceMap.GameCore
         List<Tile> tiles_to_checkNext = new List<Tile>();
         List<Tile> tiles_to_checkNow = new List<Tile>();
         int k = 0;
+        public double Funct(int x) => 200;
         public void Iterate(GameTime gameTime)
         {
             k++;
@@ -155,6 +160,11 @@ namespace ProvinceMap.GameCore
                 float kl = (1 - k / 50f)*(float)random.NextDouble();// 1 - k / 50f;
                 map.RandomiseColor(t, new Color(kl, kl, kl,
                     (float)1));
+                if (t._center.Y > Funct(t._center.X))
+                    t.tileData.ChangeTag("RED");
+                else
+                    t.tileData.ChangeTag("BLU");
+
                 tiles_checked.Add(t);
                 foreach (var n in t.connections)
                 {
